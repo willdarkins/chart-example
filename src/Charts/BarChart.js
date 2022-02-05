@@ -10,50 +10,9 @@ ChartsJS.register(
     LinearScale,
     ...registerables
 )
-
-const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
-        ],
-        borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
-        ],
-        borderWidth: 1
-    }]
-}
-
-const options = {
-    maintainAspectRatio: false,
-    scales: {
-        y: {
-            beginAtZero: true
-        }
-    },
-    legend: {
-        labels: {
-            fontSize: 26
-        }
-    }
-}
-
 const BarChart = () => {
 
     const [chart, setChart] = useState([]);
-
 
     const proxyURL = 'https://cors-anywhere.herokuapp.com/'
     const baseURL = 'https://api.coinranking.com/v2/coins/?limit=10'
@@ -71,6 +30,7 @@ const BarChart = () => {
             }).then((response) => {
                 response.json().then((json) => {
                     console.log(json)
+                    setChart(json.data)
                 })
             }).catch(error => {
                 console.log(error)
@@ -78,6 +38,46 @@ const BarChart = () => {
         }
         fetchCoins()
     }, [baseURL, proxyURL, apiKEY ])
+
+    const data = {
+        labels: chart?.coins?.map(x => x.name),
+        datasets: [{
+            label: `${chart?.coins?.length} Coins Available`,
+            data: chart?.coins?.map(x => x.price),
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    }
+    
+    const options = {
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        legend: {
+            labels: {
+                fontSize: 26
+            }
+        }
+    }
+    
 
     return <>
         <Bar
