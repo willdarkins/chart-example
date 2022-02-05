@@ -1,10 +1,12 @@
-import React from 'react';
-import { Chart as ChartsJS, BarElement, registerables, CategoryScale, LinearScale} from 'chart.js'
-import { Bar } from 'react-chartjs-2';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Chart as ChartsJS, BarElement, registerables, CategoryScale, LinearScale } from 'chart.js'
+import { Bar, Chart } from 'react-chartjs-2';
+import { useEffect, useState } from 'react';
 
 //register the charts
 ChartsJS.register(
-    BarElement, 
+    BarElement,
     CategoryScale,
     LinearScale,
     ...registerables
@@ -51,15 +53,21 @@ const options = {
 
 const BarChart = () => {
 
-const baseURL = `https://api.coinranking.com/v2/coins/?limit=10`
+    cosnt [ chart, setChart ] = useState([]);
 
-  return <>
-    <Bar
-    data= {data} 
-    options= {options}
-    height={400}
-    />
-  </>;
+    const coinResponse = async () => {
+        const { data } = await axios.get(`https://api.coinranking.com/v2/coins/?limit=10`)
+    }
+    const proxyURL = 'https://cors-anywhere.herokuapp.com/'
+    const apiKEY = 'coinrankingfbd1b7f3be77184276f357278c0d575baadb986da891a49f'
+
+    return <>
+        <Bar
+            data={data}
+            options={options}
+            height={400}
+        />
+    </>;
 };
 
 export default BarChart;
