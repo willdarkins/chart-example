@@ -1,10 +1,13 @@
 import React from 'react';
-import { Chart as ChartsJS, BarElement, registerables} from 'chart.js'
+import { Chart as ChartsJS, BarElement, registerables, CategoryScale, LinearScale} from 'chart.js'
 import { Bar } from 'react-chartjs-2';
 
 //register the charts
 ChartsJS.register(
-    BarElement, ...registerables
+    BarElement, 
+    CategoryScale,
+    LinearScale,
+    ...registerables
 )
 
 const data = {
@@ -47,14 +50,16 @@ const options = {
 }
 
 const BarChart = () => {
-  return <div>
 
+const baseURL = `https://api.coinranking.com/v2/coins/?limit=10`
+
+  return <>
     <Bar
     data= {data} 
     options= {options}
     height={400}
     />
-  </div>;
+  </>;
 };
 
 export default BarChart;
