@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Chart as ChartsJS, BarElement, registerables, CategoryScale, LinearScale } from 'chart.js'
 import { Bar, Chart } from 'react-chartjs-2';
-import { useEffect, useState } from 'react';
 
 //register the charts
 ChartsJS.register(
@@ -53,13 +52,32 @@ const options = {
 
 const BarChart = () => {
 
-    cosnt [ chart, setChart ] = useState([]);
+    const [chart, setChart] = useState([]);
 
-    const coinResponse = async () => {
-        const { data } = await axios.get(`https://api.coinranking.com/v2/coins/?limit=10`)
-    }
+
     const proxyURL = 'https://cors-anywhere.herokuapp.com/'
+    const baseURL = 'https://api.coinranking.com/v2/coins/?limit=10'
     const apiKEY = 'coinrankingfbd1b7f3be77184276f357278c0d575baadb986da891a49f'
+
+    useEffect(() => {
+        const fetchCoins = async () => {
+            await fetch(`${proxyURL}${baseURL}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'x-access-token': `${apiKEY}`,
+                    'Access-Control-Allow-Origin' : '*'
+                }
+            }).then((response) => {
+                response.json().then((json) => {
+                    console.log(json)
+                })
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+        fetchCoins()
+    }, [baseURL, proxyURL, apiKEY ])
 
     return <>
         <Bar
