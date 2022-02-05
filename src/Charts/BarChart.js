@@ -1,10 +1,10 @@
 import React from 'react';
-import { Chart as ChartsJS, BarElement} from 'chart.js'
+import { Chart as ChartsJS, BarElement, registerables} from 'chart.js'
 import { Bar } from 'react-chartjs-2';
 
 //register the charts
 ChartsJS.register(
-    BarElement
+    BarElement, ...registerables
 )
 
 const data = {
@@ -30,12 +30,18 @@ const data = {
         ],
         borderWidth: 1
     }]
-},
+}
 
 const options = {
+    maintainAspectRatio: false,
     scales: {
         y: {
             beginAtZero: true
+        }
+    },
+    legend: {
+        labels: {
+            fontSize: 26
         }
     }
 }
@@ -43,7 +49,9 @@ const options = {
 const BarChart = () => {
   return <div>
 
-    <Bar 
+    <Bar
+    data= {data} 
+    options= {options}
     height={400}
     />
   </div>;
